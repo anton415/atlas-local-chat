@@ -8,7 +8,7 @@ Local web UI for my personal AI assistant **Atlas**, running on top of LM Studio
 - Dark, minimal chat UI at `http://127.0.0.1:5050`.
 - File-based memory system (Markdown files in iCloud Drive / Atlas).
 - Project-aware routing (Bank / Finance / Temple of Excellence / General).
-- Manual project focus chips + automatic project detection when memory is written.
+- Automatic project detection when memory is written (Bank / Finance / Temple of Excellence).
 
 ## Quick start
 
