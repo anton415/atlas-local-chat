@@ -17,3 +17,9 @@ Local web UI for my personal AI assistant **Atlas**, running on top of LM Studio
 
    ```bash
    python3 app.py
+
+## Architecture
+
+- app.py – Flask app + routing + LM Studio calls
+- memory.py – file-based memory helpers
+- ui_template.py – HTML/CSS for chat UI
