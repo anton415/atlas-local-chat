@@ -2,14 +2,23 @@ import os
 import json
 
 from datetime import datetime
-from flask import Flask, render_template_string, request, redirect, url_for
+from pathlib import Path
+from flask import Flask, render_template, request, redirect, url_for
 from openai import OpenAI
-from ui_template import TEMPLATE
 from memory import (
     MEMORY_ROOT,
     DEFAULT_PROJECTS,
     append_to_file,
     build_initial_messages,
+)
+
+# Базовая папка проекта (там, где лежит app.py)
+BASE_DIR = Path(__file__).resolve().parent
+
+app = Flask(
+    __name__,
+    template_folder=str(BASE_DIR / "ui" / "templates"),
+    static_folder=str(BASE_DIR / "ui" / "static"),
 )
 
 # === CONFIG ===
@@ -62,11 +71,6 @@ TOOLS = [
         },
     }
 ]
-
-
-# === WEB APP ===
-
-app = Flask(__name__)
 
 # Conversation + messages in memory (per server run)
 conversation = []           # list of dicts: {speaker, text, time}
@@ -171,8 +175,8 @@ def index():
         return redirect(url_for("index"))
 
     # GET: render page
-    return render_template_string(
-        TEMPLATE,
+    return render_template(
+        "chat.html",
         conversation=conversation,
         model_name=MODEL_NAME,
         backend_url=LM_BACKEND_URL,
@@ -195,5 +199,4 @@ def new_session():
 if __name__ == "__main__":
     # Run on localhost:5050 (avoid conflicts)
     app.run(host="127.0.0.1", port=5050, debug=False)
-
 

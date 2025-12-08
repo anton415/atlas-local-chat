@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Atlas – Local Chat</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+</head>
+<body class="project-{{ current_project_slug }}">
+  <main>
+    <h1>Atlas – Local Chat</h1>
+    <div class="subtitle">
+      Anton: How can you help me today?
+      <span class="meta">
+        Model: {{ model_name }} · Backend: {{ backend_url }} ·
+        Projects: Bank · Finance · Temple of Excellence ·
+        Current: {{ current_project.replace('_', ' ') }}
+      </span>
+    </div>
+
+    <div class="chat-shell">
+          <div class="chat-top-bar">
+            <div>
+              <span class="status-dot"></span>
+              <span>Session active</span>
+            </div>
+            <form method="post" action="{{ url_for('new_session') }}">
+              <button type="submit" class="secondary-btn">New session</button>
+            </form>
+          </div>
+
+      <div class="messages" id="messages">
+        {% for msg in conversation %}
+          {% if msg.speaker == 'Anton' %}
+            <div class="bubble msg-user">
+              <div class="meta-line">
+                <span class="who">Anton</span>
+                <span class="time">{{ msg.time }}</span>
+              </div>
+              <div>{{ msg.text }}</div>
+            </div>
+          {% elif msg.speaker == 'Atlas' %}
+            <div class="bubble msg-atlas">
+              <div class="meta-line">
+                <span class="who">Atlas</span>
+                <span class="time">{{ msg.time }}</span>
+              </div>
+              <div>{{ msg.text }}</div>
+            </div>
+          {% else %}
+            <div class="msg-system">
+              {{ msg.text }} · {{ msg.time }}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+
+      <div class="typing" id="typing-indicator">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="typing-text">Atlas is thinking…</span>
+      </div>
+
+      <form id="chat-form" method="post">
+        <textarea
+          id="user-input"
+          name="user_input"
+          autofocus
+          placeholder="Type your message…  (Enter = send, Shift+Enter = new line)"
+        ></textarea>
+        <div class="actions-row">
+          <span class="hint">Enter to send · Shift+Enter for new line</span>
+          <button type="submit">Send</button>
+        </div>
+      </form>
+    </div>
+  </main>
+  <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+</body>
+</html>
